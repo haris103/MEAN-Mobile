@@ -1,0 +1,48 @@
+ion-header {
+  text-overflow:clip !important;
+
+  .toolbar {
+    color: #fff;
+    padding: 6px 0px;
+    text-overflow:clip !important;
+
+    &.harvesting {
+      --background: #129476;
+    }
+
+    &.training {
+      --background: #0CA3C7;
+    }
+
+    &.dwr {
+      --background: #7893F4;
+    }
+
+    &.maintenance-repair {
+      --background: #FF7272;
+    }
+
+    &.farming {
+      --background: #961818;
+    }
+
+    &.trucking {
+      --background: #4256F9;
+    }
+
+    &.others {
+      --background: #455769;
+    }
+
+    &.preTripForm {
+      --background: #3D8AA4;
+    }
+    &.profile{
+      --background: #961818;
+    }
+
+    ion-icon {
+      zoom: 1.8;
+    }
+  }
+}

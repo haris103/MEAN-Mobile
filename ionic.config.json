@@ -1,0 +1,7 @@
+{
+  "name": "DHT",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

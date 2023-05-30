@@ -1,0 +1,95 @@
+<app-header [title]="'View Details'" [color]="'harvesting'"></app-header>
+<ion-content>
+<div class="px-2">
+  <!-- <form [formGroup]="detailsForm"> -->
+    <div class="px-2 py-2">
+      <div role="dialog" aria-modal="true">
+        <div class="mb-4 relative z-80">
+          <div class="mx-auto max-w-full transform rounded-xl px-0  transition-all">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Invoiced Jobs<span *ngIf="isJobSelected"
+                class="text-red-400"> *</span></label>
+            <div class="flex items-center justify-between gap-x-2 rounded-md">
+              <input (keyup)="job_search$.next($event.target.value)" [value]="job_name" (click)="inputClickedJob()"
+                #jobInput
+                class="w-full px-4 py-2.5 text-gray-900  placeholder-gray-500 rounded-md border border-gray-300 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                placeholder="Select Invoiced Jobs" role="" aria-expanded="false" aria-controls="options">
+            </div>
+
+            <div *ngIf="allJobs | withLoading | async as allJobs">
+              <div class="flex justify-center items-center">
+                <ion-spinner *ngIf="allJobs?.loading" name="crescent" mode="indeterminate"
+                  color="primary"></ion-spinner>
+              </div>
+              <ul *ngIf="allJobs?.value && jobUL"
+                class="-mb-2 max-h-44 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800 bg-white relative w-full"
+                id="options" role="listbox">
+                <li *ngFor="let job of (allJobs?.value.jobs)" (click)="listClickedJob(job)"
+                  class="cursor-pointer select-none rounded-md px-4 py-2 hover:bg-gray-200" role="option"
+                  tabindex="-1">
+                  <div class="flex items-center p-2">
+                    {{job.created_at|date:"yy-MM"}}-{{job.customer_name}}-{{job.farm_name}}-{{job.crop_name}}
+                  </div>
+                </li>
+              </ul>
+              <div *ngIf="allJobs?.value?.jobs?.length === 0">
+                <div
+                  class="cursor-pointer select-none rounded-md px-4 py-2 hover:bg-gray-200 text-gray-500 hover:text-gray-700 hover:font-semibold"
+                  disabled role="option" tabindex="-1"> No Invoiced Job(s) found </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ion-card class="card" *ngIf="(loadingSpinner | async) === false">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6" (click)="onClick('Combine Operator')">
+            <div
+              class=" pl-2 pt-1 border rounded-md {{value === 'Combine Operator'? 'border-3D8AA4 border-2':''}} bg-gray-200">
+              <h1 class="font-Lato text-xs font-semibold text-black">Combine Operator</h1>
+              <span class="font-Lato text-xs font-semibold text-black ml-1">{{combineOperatorCount}}</span>
+            </div>
+          </ion-col>
+          <ion-col size="6" (click)="onClick('cart-operator')">
+            <div
+              class=" pl-2 pt-1 border rounded-md {{value === 'cart-operator'? 'border-3D8AA4 border-2':''}} bg-gray-200">
+              <h1 class="font-Lato text-xs font-semibold text-black">Cart Operator</h1>
+              <span class="font-Lato text-xs font-semibold text-black ml-1">{{cartOperatorCount}}</span>
+
+            </div>
+          </ion-col>
+        </ion-row>
+        <div *ngIf="value === 'Combine Operator'" >
+          <ion-row  class="m-1 flex content-center items-center">
+            <div *ngIf="combineOperatorCount > 0">
+              <ion-col size="9" *ngFor="let data of data">
+                <div class="font-Lato font-semibold" *ngIf="data.role === 'Combine Operator'">{{data.first_name}} {{data.last_name}} </div>
+              </ion-col>
+            </div>
+            <div *ngIf="combineOperatorCount <= 0">
+               <ion-text class="font-Lato font-semibold text-black pl-1">No Combine Operator(s) Found</ion-text>
+            </div>
+          </ion-row>
+        </div>
+
+        <div *ngIf="value === 'cart-operator'">
+          <ion-row  class="m-1 flex content-center items-center">
+            <div *ngIf="cartOperatorCount > 0">
+              <ion-col size="9" *ngFor="let data of data" >
+                <div class="font-Lato font-semibold" *ngIf="data.role === 'Cart Operator'">{{data.first_name}} {{data.last_name}} </div>
+              </ion-col>
+            </div>
+            <div *ngIf="cartOperatorCount <= 0">
+              <ion-text class="font-Lato font-semibold text-black pl-1">No Cart Operator(s) Found</ion-text>
+           </div>
+          </ion-row>
+        </div>
+
+      </ion-grid>
+    </ion-card>
+    <div class="flex justify-center items-center h-full" *ngIf="(loadingSpinner | async) === true">
+      <ion-spinner class="h-32 w-32" name="crescent"></ion-spinner>
+    </div>
+</div>
+</ion-content>
